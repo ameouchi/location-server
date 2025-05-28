@@ -5,9 +5,17 @@ const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+
+// Explicitly allow WebSocket upgrade
+const wss = new WebSocket.Server({ noServer: true });
 
 let clients = [];
+
+server.on('upgrade', (req, socket, head) => {
+  wss.handleUpgrade(req, socket, head, (ws) => {
+    wss.emit('connection', ws, req);
+  });
+});
 
 wss.on('connection', ws => {
   clients.push(ws);
