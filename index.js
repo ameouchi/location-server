@@ -1,23 +1,23 @@
 const express = require('express');
+const http = require('http');
 const WebSocket = require('ws');
 const cors = require('cors');
 
 const app = express();
-const PORT = 8080;
-const WS_PORT = 8081;
-
-app.use(cors());
-app.use(express.json());
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 let clients = [];
 
-const wss = new WebSocket.Server({ port: WS_PORT });
 wss.on('connection', ws => {
   clients.push(ws);
   ws.on('close', () => {
     clients = clients.filter(c => c !== ws);
   });
 });
+
+app.use(cors());
+app.use(express.json());
 
 app.post('/location', (req, res) => {
   const data = JSON.stringify(req.body);
@@ -29,7 +29,7 @@ app.post('/location', (req, res) => {
   res.sendStatus(200);
 });
 
-app.listen(PORT, () => {
-  console.log(`HTTP server running on http://localhost:${PORT}`);
-  console.log(`WebSocket server running on ws://localhost:${WS_PORT}`);
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
+  console.log(`HTTP & WebSocket server running on https://location-server-7l5r.onrender.com`);
 });
