@@ -31,5 +31,5 @@ app.post('/location', (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
-  console.log(`HTTP & WebSocket server running on https://location-server-7l5r.onrender.com`);
+  console.log(`HTTP & WebSocket server running on port ${PORT}`);
 });
