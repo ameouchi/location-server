@@ -37,7 +37,7 @@ app.post('/location', (req, res) => {
   res.sendStatus(200);
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
   console.log(`HTTP & WebSocket server running on port ${PORT}`);
 });
